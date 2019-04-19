@@ -126,8 +126,10 @@ public class Elevator implements Runnable {
     public synchronized boolean goIn(int floor,Person p) { // 走进来一个人
         if (this.peopleNum() < this.maximum) {
             this.personPool.add(p);
-            TimableOutput.println(
-                    String.format("IN-%d-%d-%s",p.getId(),floor,this.id));
+            synchronized (TimableOutput.class) {
+                TimableOutput.println(
+                        String.format("IN-%d-%d-%s",p.getId(),floor,this.id));
+            }
             return true;
         } else {
             //System.out.println("now elevator has " +
@@ -140,8 +142,10 @@ public class Elevator implements Runnable {
     public synchronized void goOut(int floor, Person p) { // 走出去一个人（到了目的地）
         this.personPool.remove(p);
         //System.out.println("now elevator has " + peopleNum() + " people");
-        TimableOutput.println(
-                String.format("OUT-%d-%d-%s",p.getId(),floor,this.id));
+        synchronized (TimableOutput.class) {
+            TimableOutput.println(
+                    String.format("OUT-%d-%d-%s",p.getId(),floor,this.id));
+        }
     }
 
     public void PickUp(int from, int to) throws InterruptedException {
@@ -326,13 +330,18 @@ public class Elevator implements Runnable {
     }
 
     public void Arrive(int floor) {
-        TimableOutput.println(String.format("ARRIVE-%d-%s",floor,this.id));
+        synchronized (TimableOutput.class) {
+            TimableOutput.println(String.format("ARRIVE-%d-%s",floor,this.id));
+        }
     }
 
     public synchronized void Open(int floor) throws InterruptedException {
         //System.out.println("Open elevator!");
         if (this.isClosed()) {
-            TimableOutput.println(String.format("OPEN-%d-%s",floor, this.id));
+            synchronized (TimableOutput.class) {
+                TimableOutput.println(
+                        String.format("OPEN-%d-%s",floor, this.id));
+            }
             Thread.sleep(openCloseTime);
         }
         this.open = true;
@@ -343,7 +352,10 @@ public class Elevator implements Runnable {
         //System.out.println("Close elevator!");
         if (this.isOpen()) {
             Thread.sleep(openCloseTime);
-            TimableOutput.println(String.format("CLOSE-%d-%s",floor, this.id));
+            synchronized (TimableOutput.class) {
+                TimableOutput.println(
+                        String.format("CLOSE-%d-%s",floor, this.id));
+            }
         }
         this.open = false;
         this.closed = true;
