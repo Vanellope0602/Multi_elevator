@@ -1,2 +1,11 @@
-# Multi_elevator
-The 7th homework of OO in BUAA, SS elevator
+### elevator3
+
+1. 先判断是否能直达，若能直达，Dispatch把任务放到对应电梯的队列里
+
+2. 若不能直达，则给出换乘方案：
+
+   到距离这个人最近的换乘点进行换乘，到达换乘点后，Dispatch把下一阶段的任务释放给下一个电梯接人。
+
+3. 每个电梯只能从自己的队列里取任务，上下过程中可捎带。
+
+4. 所有输出信息都写在Elevator当中，Arrive，Crawl是向上运行，Slide是向下运行。
